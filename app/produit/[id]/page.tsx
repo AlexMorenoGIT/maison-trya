@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
+import FadeIn from "@/components/FadeIn";
 import {
   getProductById,
   getRelatedProducts,
@@ -148,7 +149,7 @@ export default function ProductPage() {
           </div>
 
           {/* Right: Product Info */}
-          <div className="lg:w-[45%] lg:py-32 py-16 px-8 lg:px-16">
+          <FadeIn direction="right" className="lg:w-[45%] lg:py-32 py-16 px-8 lg:px-16">
             {/* Breadcrumb */}
             <p className="text-xs text-tortoise/50 uppercase tracking-[0.1em]">
               <Link href="/" className="hover:text-tortoise/80 transition-colors">
@@ -213,19 +214,23 @@ export default function ProductPage() {
                 GUIDE DES TAILLES
               </button>
             </p>
-          </div>
+          </FadeIn>
         </div>
 
         {/* Related products section */}
         <section className="bg-cream">
           <div className="max-w-7xl mx-auto py-24 px-8">
             <div className="border-t border-tortoise/10" />
-            <h2 className="py-16 text-center text-xl font-bold uppercase tracking-[0.2em]">
-              VOUS AIMEREZ AUSSI
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {related.map((p) => (
-                <ProductCard key={p.id} product={p} />
+            <FadeIn>
+              <h2 className="py-16 text-center text-xl font-bold uppercase tracking-[0.2em]">
+                VOUS AIMEREZ AUSSI
+              </h2>
+            </FadeIn>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {related.map((p, index) => (
+                <FadeIn key={p.id} delay={index * 0.1}>
+                  <ProductCard product={p} />
+                </FadeIn>
               ))}
             </div>
           </div>

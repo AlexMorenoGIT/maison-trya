@@ -1,9 +1,11 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
+import FadeIn from "@/components/FadeIn";
 import { featuredProducts } from "@/lib/data/products";
 
 export default function Home() {
@@ -11,14 +13,17 @@ export default function Home() {
     <>
       <Header />
 
-      {/* ── Section 1: Hero ──────────────────────────────────────────────── */}
+      {/* -- Section 1: Hero ------------------------------------------------- */}
       <section className="h-screen w-full relative overflow-hidden bg-tortoise">
         {/* Animated grain texture */}
         <div className="absolute inset-0 opacity-[0.08] pointer-events-none hero-grain" />
 
         {/* Centered content */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full px-8">
-          <img
+          <motion.img
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
             src="/logos/logo-bloc-cream.svg"
             alt="Maison trya."
             className="w-[120px]"
@@ -26,18 +31,26 @@ export default function Home() {
 
           <div className="h-12" />
 
-          <h1 className="font-bold uppercase tracking-[0.3em] text-cream text-2xl md:text-4xl text-center">
-            ENTRE FÉROCITÉ ET VULNÉRABILITÉ
-          </h1>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            className="font-bold uppercase tracking-[0.3em] text-cream text-2xl md:text-4xl text-center"
+          >
+            ENTRE FEROCITE ET VULNERABILITE
+          </motion.h1>
 
           <div className="h-12" />
 
-          <a
+          <motion.a
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
             href="#collection"
             className="uppercase tracking-[0.2em] text-sm border border-cream/50 px-8 py-3 text-cream hover:bg-cream hover:text-tortoise transition-all duration-300"
           >
-            DÉCOUVRIR LA COLLECTION
-          </a>
+            DECOUVRIR LA COLLECTION
+          </motion.a>
         </div>
 
         {/* Scroll indicator */}
@@ -61,90 +74,96 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Section 2: Manifeste "L'Instinct" ────────────────────────────── */}
+      {/* -- Section 2: Manifeste "L'Instinct" ------------------------------- */}
       <section className="bg-cream py-32 px-8">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           {/* Left side: Text */}
           <div className="lg:col-span-7">
-            <span className="font-bold uppercase tracking-[0.3em] text-xs text-rubber">
-              L&apos;INSTINCT
-            </span>
+            <FadeIn>
+              <span className="font-bold uppercase tracking-[0.3em] text-xs text-rubber">
+                L&apos;INSTINCT
+              </span>
 
-            <h2 className="font-bold uppercase text-3xl md:text-5xl leading-tight text-tortoise mt-4">
-              LA VÉRITÉ SAUVAGE QUI SURVIT QUAND TOUT S&apos;ÉCROULE
-            </h2>
+              <h2 className="font-bold uppercase text-3xl md:text-5xl leading-tight text-tortoise mt-4">
+                LA VERITE SAUVAGE QUI SURVIT QUAND TOUT S&apos;ECROULE
+              </h2>
+            </FadeIn>
 
-            <p className="mt-8 text-lg text-tortoise/80 leading-relaxed">
-              Maison trya. est née d&apos;un point de bascule. Ce moment où le
-              carcan vole en éclats, où la femme refuse de tenir le coup pour
-              enfin se reconquérir. Nous créons pour celles qui naviguent entre
-              leur douceur et leur férocité, sans jamais se trahir.
-            </p>
+            <FadeIn delay={0.2}>
+              <p className="mt-8 text-lg text-tortoise/80 leading-relaxed">
+                Maison trya. est nee d&apos;un point de bascule. Ce moment ou le
+                carcan vole en eclats, ou la femme refuse de tenir le coup pour
+                enfin se reconquerir. Nous creons pour celles qui naviguent entre
+                leur douceur et leur ferocite, sans jamais se trahir.
+              </p>
 
-            <a
-              href="/a-propos"
-              className="inline-block mt-8 font-bold uppercase text-sm tracking-[0.15em] text-tortoise underline underline-offset-8"
-            >
-              DÉCOUVRIR L&apos;UNIVERS →
-            </a>
+              <a
+                href="/a-propos"
+                className="inline-block mt-8 font-bold uppercase text-sm tracking-[0.15em] text-tortoise underline underline-offset-8"
+              >
+                DECOUVRIR L&apos;UNIVERS &rarr;
+              </a>
+            </FadeIn>
           </div>
 
           {/* Right side: Image */}
-          <div className="lg:col-span-5">
+          <FadeIn className="lg:col-span-5" delay={0.3} direction="right">
             <ImagePlaceholder aspect="portrait" seed={42} className="h-full" />
-          </div>
+          </FadeIn>
         </div>
       </section>
 
-      {/* ── Section 3: Sélection Produits ─────────────────────────────────── */}
+      {/* -- Section 3: Selection Produits ------------------------------------ */}
       <section id="collection" className="bg-cream py-32 px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="font-bold uppercase tracking-[0.3em] text-center text-3xl text-tortoise mb-16">
-            LA COLLECTION
-          </h2>
+          <FadeIn>
+            <h2 className="font-bold uppercase tracking-[0.3em] text-center text-3xl text-tortoise mb-16">
+              LA COLLECTION
+            </h2>
+          </FadeIn>
 
           {/* Asymmetric grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8">
             {/* Row 1 */}
             {featuredProducts[0] && (
-              <div className="lg:col-span-7">
+              <FadeIn className="md:col-span-1 lg:col-span-7" delay={0}>
                 <ProductCard product={featuredProducts[0]} />
-              </div>
+              </FadeIn>
             )}
             {featuredProducts[1] && (
-              <div className="lg:col-span-5 lg:mt-16">
+              <FadeIn className="md:col-span-1 lg:col-span-5 lg:mt-16" delay={0.1}>
                 <ProductCard product={featuredProducts[1]} />
-              </div>
+              </FadeIn>
             )}
 
             {/* Row 2 */}
             {featuredProducts[2] && (
-              <div className="lg:col-span-5">
+              <FadeIn className="md:col-span-1 lg:col-span-5" delay={0.2}>
                 <ProductCard product={featuredProducts[2]} />
-              </div>
+              </FadeIn>
             )}
             {featuredProducts[3] && (
-              <div className="lg:col-span-7 lg:mt-16">
+              <FadeIn className="md:col-span-1 lg:col-span-7 lg:mt-16" delay={0.3}>
                 <ProductCard product={featuredProducts[3]} />
-              </div>
+              </FadeIn>
             )}
 
             {/* Row 3 */}
             {featuredProducts[4] && (
-              <div className="lg:col-span-7">
+              <FadeIn className="md:col-span-1 lg:col-span-7" delay={0.4}>
                 <ProductCard product={featuredProducts[4]} />
-              </div>
+              </FadeIn>
             )}
             {featuredProducts[5] && (
-              <div className="lg:col-span-5 lg:mt-16">
+              <FadeIn className="md:col-span-1 lg:col-span-5 lg:mt-16" delay={0.5}>
                 <ProductCard product={featuredProducts[5]} />
-              </div>
+              </FadeIn>
             )}
           </div>
         </div>
       </section>
 
-      {/* ── Section 4: Editorial Quote ────────────────────────────────────── */}
+      {/* -- Section 4: Editorial Quote --------------------------------------- */}
       <section className="w-full h-[70vh] relative">
         {/* Background image */}
         <div className="absolute inset-0">
@@ -153,9 +172,11 @@ export default function Home() {
 
         {/* Centered quote */}
         <div className="relative z-10 flex items-center justify-center h-full px-8">
-          <p className="font-bold uppercase text-2xl md:text-4xl lg:text-5xl text-cream tracking-[0.15em] text-center max-w-4xl leading-relaxed">
-            NOUS NE VENDONS PAS DE LA PARURE, MAIS UNE MÉTAMORPHOSE.
-          </p>
+          <FadeIn direction="none">
+            <p className="font-bold uppercase text-2xl md:text-4xl lg:text-5xl text-cream tracking-[0.15em] text-center max-w-4xl leading-relaxed">
+              NOUS NE VENDONS PAS DE LA PARURE, MAIS UNE METAMORPHOSE.
+            </p>
+          </FadeIn>
         </div>
 
         {/* Bottom right logo */}
@@ -166,43 +187,47 @@ export default function Home() {
         />
       </section>
 
-      {/* ── Section 5: Les 4 Valeurs ──────────────────────────────────────── */}
+      {/* -- Section 5: Les 4 Valeurs ----------------------------------------- */}
       <section className="bg-tortoise py-24 px-8">
-        <h2 className="font-bold uppercase tracking-[0.3em] text-cream text-center text-3xl mb-16">
-          NOS VALEURS
-        </h2>
+        <FadeIn>
+          <h2 className="font-bold uppercase tracking-[0.3em] text-cream text-center text-3xl mb-16">
+            NOS VALEURS
+          </h2>
+        </FadeIn>
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {[
             {
               name: "L'INSTINCT",
               description:
-                "La vérité sauvage qui survit quand tout s'écroule.",
+                "La verite sauvage qui survit quand tout s'ecroule.",
             },
             {
-              name: "L'ÉVEIL",
+              name: "L'EVEIL",
               description:
-                "Le passage brutal de l'inertie à l'action. Montrer les crocs.",
+                "Le passage brutal de l'inertie a l'action. Montrer les crocs.",
             },
             {
-              name: "LA DUALITÉ",
+              name: "LA DUALITE",
               description:
-                "L'équilibre souverain entre la douceur intérieure et la griffe extérieure.",
+                "L'equilibre souverain entre la douceur interieure et la griffe exterieure.",
             },
             {
-              name: "LA SOUVERAINETÉ",
+              name: "LA SOUVERAINETE",
               description:
-                "Le droit absolu de régner sur son propre territoire.",
+                "Le droit absolu de regner sur son propre territoire.",
             },
-          ].map((value) => (
-            <div key={value.name} className="border-t border-cream/20 pt-8">
-              <h3 className="font-bold uppercase text-cream tracking-[0.15em] text-lg">
-                {value.name}
-              </h3>
-              <p className="text-cream/70 text-sm mt-4 leading-relaxed">
-                {value.description}
-              </p>
-            </div>
+          ].map((value, index) => (
+            <FadeIn key={value.name} delay={index * 0.1}>
+              <div className="border-t border-cream/20 pt-8">
+                <h3 className="font-bold uppercase text-cream tracking-[0.15em] text-lg">
+                  {value.name}
+                </h3>
+                <p className="text-cream/70 text-sm mt-4 leading-relaxed">
+                  {value.description}
+                </p>
+              </div>
+            </FadeIn>
           ))}
         </div>
       </section>
