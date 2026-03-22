@@ -20,8 +20,8 @@ export default function Header({ forceDark = false }: HeaderProps) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileAccordion, setMobileAccordion] = useState<string | null>(null);
 
-  const megaMenuTimeout = useRef<ReturnType<typeof setTimeout>>();
-  const collectionsTimeout = useRef<ReturnType<typeof setTimeout>>();
+  const megaMenuTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const collectionsTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
