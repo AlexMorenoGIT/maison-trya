@@ -8,17 +8,36 @@ interface ProductCardProps {
   product: Product;
 }
 
+function slugToSeed(slug: string): number {
+  let hash = 0;
+  for (let i = 0; i < slug.length; i++) {
+    hash = (hash << 5) - hash + slug.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
 export default function ProductCard({ product }: ProductCardProps) {
-  const seed = parseInt(product.id.replace(/\D/g, "") || "0", 10);
+  const seed = slugToSeed(product.slug);
+  const firstImage = product.images?.[0];
+  const hasRealImage = firstImage && firstImage.startsWith("http");
 
   const formattedPrice = `${product.price.toLocaleString("fr-FR")} \u20AC`;
 
   return (
-    <Link href={`/produit/${product.id}`} className="group block">
+    <Link href={`/produit/${product.slug}`} className="group block">
       {/* Image area */}
       <div className="overflow-hidden">
         <div className="transition-transform duration-500 group-hover:scale-105">
-          <ImagePlaceholder aspect="portrait" seed={seed} />
+          {hasRealImage ? (
+            <img
+              src={firstImage}
+              alt={product.name}
+              className="w-full aspect-[3/4] object-cover"
+            />
+          ) : (
+            <ImagePlaceholder aspect="portrait" seed={seed} />
+          )}
         </div>
       </div>
 
