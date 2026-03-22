@@ -36,10 +36,10 @@ export default function Footer() {
           <ul className="space-y-3">
             <li>
               <Link
-                href="/"
+                href="/catalogue"
                 className="text-sm uppercase tracking-[0.1em] hover:underline underline-offset-4 transition-all"
               >
-                Collections
+                Catalogue
               </Link>
             </li>
             <li>
