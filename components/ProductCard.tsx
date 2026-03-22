@@ -2,25 +2,15 @@
 
 import Link from "next/link";
 import type { Product } from "@/lib/types";
-import ImagePlaceholder from "./ImagePlaceholder";
 
 interface ProductCardProps {
   product: Product;
 }
 
-function slugToSeed(slug: string): number {
-  let hash = 0;
-  for (let i = 0; i < slug.length; i++) {
-    hash = (hash << 5) - hash + slug.charCodeAt(i);
-    hash |= 0;
-  }
-  return Math.abs(hash);
-}
-
 export default function ProductCard({ product }: ProductCardProps) {
-  const seed = slugToSeed(product.slug);
   const firstImage = product.images?.[0];
   const hasRealImage = firstImage && firstImage.startsWith("http");
+  const placeholderImage = `https://picsum.photos/seed/${product.slug}/600/800`;
 
   const formattedPrice = `${product.price.toLocaleString("fr-FR")} \u20AC`;
 
@@ -29,15 +19,11 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Image area */}
       <div className="overflow-hidden">
         <div className="transition-transform duration-500 group-hover:scale-105">
-          {hasRealImage ? (
-            <img
-              src={firstImage}
-              alt={product.name}
-              className="w-full aspect-[3/4] object-cover"
-            />
-          ) : (
-            <ImagePlaceholder aspect="portrait" seed={seed} />
-          )}
+          <img
+            src={hasRealImage ? firstImage : placeholderImage}
+            alt={product.name}
+            className="w-full aspect-[3/4] object-cover"
+          />
         </div>
       </div>
 

@@ -3,22 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
-import ImagePlaceholder from "@/components/ImagePlaceholder";
 import FadeIn from "@/components/FadeIn";
 import { useCart } from "@/lib/cart-context";
 import type { Product } from "@/lib/types";
 
 function formatPrice(price: number): string {
   return price.toLocaleString("fr-FR") + " \u20AC";
-}
-
-function slugToSeed(slug: string): number {
-  let hash = 0;
-  for (let i = 0; i < slug.length; i++) {
-    hash = (hash << 5) - hash + slug.charCodeAt(i);
-    hash |= 0;
-  }
-  return Math.abs(hash);
 }
 
 interface ProductDetailClientProps {
@@ -36,7 +26,6 @@ export default function ProductDetailClient({
   const [added, setAdded] = useState(false);
   const { addItem } = useCart();
 
-  const baseSeed = slugToSeed(product.slug);
   const totalImages = product.images.length;
 
   const prevImage = () => {
@@ -53,6 +42,9 @@ export default function ProductDetailClient({
 
   const currentImage = product.images[currentImageIndex];
   const hasRealImage = currentImage && currentImage.startsWith("http");
+  const displayImage = hasRealImage
+    ? currentImage
+    : `https://picsum.photos/seed/${product.slug}-${currentImageIndex}/800/1000`;
 
   function handleAddToCart() {
     addItem({
@@ -75,19 +67,11 @@ export default function ProductDetailClient({
       <div className="lg:flex">
         {/* Left: Image Carousel */}
         <div className="relative lg:w-[55%] lg:h-screen lg:sticky lg:top-0">
-          {hasRealImage ? (
-            <img
-              src={currentImage}
-              alt={product.name}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <ImagePlaceholder
-              aspect="portrait"
-              seed={baseSeed + currentImageIndex}
-              className="h-full"
-            />
-          )}
+          <img
+            src={displayImage}
+            alt={product.name}
+            className="w-full h-full object-cover"
+          />
 
           {/* Navigation arrows */}
           {totalImages > 1 && (

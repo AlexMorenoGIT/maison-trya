@@ -9,7 +9,6 @@ import { createClient } from "@/lib/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FadeIn from "@/components/FadeIn";
-import ImagePlaceholder from "@/components/ImagePlaceholder";
 
 function formatPrice(price: number) {
   return new Intl.NumberFormat("fr-FR", {
@@ -119,19 +118,11 @@ export default function PanierPage() {
                           <div className="flex items-center gap-4 md:gap-6 py-6 border-b border-tortoise/10">
                             {/* Image */}
                             <div className="w-20 h-24 md:w-24 md:h-32 flex-shrink-0 overflow-hidden">
-                              {item.image ? (
-                                <img
-                                  src={item.image}
-                                  alt={item.name}
-                                  className="w-full h-full object-cover"
-                                />
-                              ) : (
-                                <ImagePlaceholder
-                                  aspect="portrait"
-                                  seed={item.name.charCodeAt(0)}
-                                  className="!w-full !h-full"
-                                />
-                              )}
+                              <img
+                                src={item.image || `https://picsum.photos/seed/${item.slug}/200/260`}
+                                alt={item.name}
+                                className="w-full h-full object-cover"
+                              />
                             </div>
 
                             {/* Info */}

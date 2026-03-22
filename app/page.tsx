@@ -1,7 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
-import ImagePlaceholder from "@/components/ImagePlaceholder";
 import FadeIn from "@/components/FadeIn";
 import { createClient } from "@/lib/supabase/server";
 import type { Product } from "@/lib/types";
@@ -59,7 +58,11 @@ export default async function Home() {
 
           {/* Right side: Image */}
           <FadeIn className="lg:col-span-5" delay={0.3} direction="right">
-            <ImagePlaceholder aspect="portrait" seed={42} className="h-full" />
+            <img
+              src="https://picsum.photos/seed/maison-trya-manifeste/600/800"
+              alt="Maison trya manifeste"
+              className="w-full aspect-[3/4] object-cover"
+            />
           </FadeIn>
         </div>
       </section>
@@ -118,7 +121,11 @@ export default async function Home() {
       <section className="w-full h-[70vh] relative">
         {/* Background image */}
         <div className="absolute inset-0">
-          <ImagePlaceholder aspect="wide" seed={99} overlay className="!aspect-auto h-full" />
+          <img
+            src="https://picsum.photos/seed/maison-trya-editorial/1600/900"
+            alt="Editorial"
+            className="w-full h-full object-cover brightness-50"
+          />
         </div>
 
         {/* Centered quote */}

@@ -2,7 +2,6 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import ImagePlaceholder from "@/components/ImagePlaceholder";
 import FadeIn from "@/components/FadeIn";
 
 export default function APropos() {
@@ -13,7 +12,11 @@ export default function APropos() {
       {/* Section 1: Hero */}
       <section className="relative w-full h-[80vh] overflow-hidden">
         <div className="absolute inset-0">
-          <ImagePlaceholder aspect="wide" seed={200} overlay className="!h-full" />
+          <img
+            src="https://picsum.photos/seed/trya-univers/1600/900"
+            alt="L'univers Maison trya"
+            className="w-full h-full object-cover brightness-50"
+          />
         </div>
         {/* Centered content */}
         <div className="relative z-10 flex items-center justify-center h-full">
@@ -65,73 +68,32 @@ export default function APropos() {
           </h2>
         </FadeIn>
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Valeur 1: L'Instinct */}
-          <FadeIn delay={0}>
-            <div className="relative min-h-[400px] overflow-hidden">
-              <div className="absolute inset-0">
-                <ImagePlaceholder aspect="landscape" seed={10} overlay className="!h-full" />
+          {[
+            { name: "L'INSTINCT", seed: "trya-instinct", desc: "La vérité sauvage qui survit quand tout s'écroule. Cette part animale qui refuse de se conformer, qui sait avant de comprendre." },
+            { name: "L'ÉVEIL", seed: "trya-eveil", desc: "Le passage brutal de l'inertie à l'action. Le moment où l'on décide de montrer les crocs plutôt que de subir en silence." },
+            { name: "LA DUALITÉ", seed: "trya-dualite", desc: "L'équilibre souverain entre la douceur intérieure et la griffe extérieure. Porter sa vulnérabilité comme une force." },
+            { name: "LA SOUVERAINETÉ", seed: "trya-souverainete", desc: "Le droit absolu de régner sur son propre territoire. La fin n'appartient qu'à elle." },
+          ].map((value, index) => (
+            <FadeIn key={value.name} delay={index * 0.1}>
+              <div className="relative min-h-[400px] overflow-hidden">
+                <div className="absolute inset-0">
+                  <img
+                    src={`https://picsum.photos/seed/${value.seed}/800/500`}
+                    alt={value.name}
+                    className="w-full h-full object-cover brightness-[0.4]"
+                  />
+                </div>
+                <div className="absolute bottom-0 left-0 p-10 z-10">
+                  <h3 className="font-bold uppercase text-cream text-2xl tracking-[0.15em]">
+                    {value.name}
+                  </h3>
+                  <p className="text-cream/80 text-base mt-4 leading-relaxed">
+                    {value.desc}
+                  </p>
+                </div>
               </div>
-              <div className="absolute bottom-0 left-0 p-10 z-10">
-                <h3 className="font-bold uppercase text-cream text-2xl tracking-[0.15em]">
-                  L&apos;INSTINCT
-                </h3>
-                <p className="text-cream/80 text-base mt-4 leading-relaxed">
-                  La v&eacute;rit&eacute; sauvage qui survit quand tout s&apos;&eacute;croule. Cette part animale qui refuse de se conformer, qui sait avant de comprendre.
-                </p>
-              </div>
-            </div>
-          </FadeIn>
-
-          {/* Valeur 2: L'Eveil */}
-          <FadeIn delay={0.1}>
-            <div className="relative min-h-[400px] overflow-hidden">
-              <div className="absolute inset-0">
-                <ImagePlaceholder aspect="landscape" seed={20} overlay className="!h-full" />
-              </div>
-              <div className="absolute bottom-0 left-0 p-10 z-10">
-                <h3 className="font-bold uppercase text-cream text-2xl tracking-[0.15em]">
-                  L&apos;&Eacute;VEIL
-                </h3>
-                <p className="text-cream/80 text-base mt-4 leading-relaxed">
-                  Le passage brutal de l&apos;inertie &agrave; l&apos;action. Le moment o&ugrave; l&apos;on d&eacute;cide de montrer les crocs plut&ocirc;t que de subir en silence.
-                </p>
-              </div>
-            </div>
-          </FadeIn>
-
-          {/* Valeur 3: La Dualite */}
-          <FadeIn delay={0.2}>
-            <div className="relative min-h-[400px] overflow-hidden">
-              <div className="absolute inset-0">
-                <ImagePlaceholder aspect="landscape" seed={30} overlay className="!h-full" />
-              </div>
-              <div className="absolute bottom-0 left-0 p-10 z-10">
-                <h3 className="font-bold uppercase text-cream text-2xl tracking-[0.15em]">
-                  LA DUALIT&Eacute;
-                </h3>
-                <p className="text-cream/80 text-base mt-4 leading-relaxed">
-                  L&apos;&eacute;quilibre souverain entre la douceur int&eacute;rieure et la griffe ext&eacute;rieure. Porter sa vuln&eacute;rabilit&eacute; comme une force.
-                </p>
-              </div>
-            </div>
-          </FadeIn>
-
-          {/* Valeur 4: La Souverainete */}
-          <FadeIn delay={0.3}>
-            <div className="relative min-h-[400px] overflow-hidden">
-              <div className="absolute inset-0">
-                <ImagePlaceholder aspect="landscape" seed={40} overlay className="!h-full" />
-              </div>
-              <div className="absolute bottom-0 left-0 p-10 z-10">
-                <h3 className="font-bold uppercase text-cream text-2xl tracking-[0.15em]">
-                  LA SOUVERAINET&Eacute;
-                </h3>
-                <p className="text-cream/80 text-base mt-4 leading-relaxed">
-                  Le droit absolu de r&eacute;gner sur son propre territoire. La fin n&apos;appartient qu&apos;&agrave; elle.
-                </p>
-              </div>
-            </div>
-          </FadeIn>
+            </FadeIn>
+          ))}
         </div>
       </section>
 
@@ -139,7 +101,11 @@ export default function APropos() {
       <section className="bg-cream py-32 px-8">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
           <FadeIn className="lg:col-span-5" direction="left">
-            <ImagePlaceholder aspect="portrait" seed={300} />
+            <img
+              src="https://picsum.photos/seed/trya-fondatrice/600/800"
+              alt="La fondatrice"
+              className="w-full aspect-[3/4] object-cover"
+            />
           </FadeIn>
           <FadeIn className="lg:col-span-7 lg:pl-16 flex flex-col justify-center" direction="right" delay={0.2}>
             <p className="font-bold uppercase tracking-[0.3em] text-xs text-rubber">
