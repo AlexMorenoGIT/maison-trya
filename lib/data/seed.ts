@@ -98,7 +98,7 @@ function loadProducts() {
     const idMatch = block.match(/id:\s*"([^"]+)"/);
     const nameMatch = block.match(/name:\s*"([^"]+)"/);
     const priceMatch = block.match(/price:\s*(\d+)/);
-    const descMatch = block.match(/description:\s*\n?\s*"([^"]+(?:"[^"]*)*?)"/s);
+    const descMatch = block.match(/description:[\s\S]*?"([^"]+(?:"[^"]*)*?)"/)
     const featuredMatch = block.match(/isFeatured:\s*(true|false)/);
 
     if (!idMatch || !nameMatch || !priceMatch) continue;

@@ -1,6 +1,17 @@
-import { Product } from "../types";
+// Local interface for seed data — intentionally different from the Supabase Product type.
+// This file is read as raw text by seed.ts (via fs.readFileSync + regex parsing).
+interface SeedProduct {
+  id: string;
+  name: string;
+  price: number;
+  category: string;
+  description: string;
+  colors: { name: string; hex: string }[];
+  images: string[];
+  isFeatured: boolean;
+}
 
-export const products: Product[] = [
+export const products: SeedProduct[] = [
   // ── Featured (6 vetements) ──────────────────────────────────────────
   {
     id: "robe-sauvage",
