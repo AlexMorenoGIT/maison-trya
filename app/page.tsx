@@ -22,7 +22,7 @@ export default async function Home() {
     settings[row.key] = row.value;
   }
 
-  const heroVideoUrl = settings["hero_video_url"] || "";
+  const heroVideoUrl = settings["hero_video_url"] || "/videos/hero.mp4";
 
   return (
     <SiteSettingsProvider initial={settings}>

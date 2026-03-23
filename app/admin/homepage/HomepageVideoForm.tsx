@@ -34,30 +34,71 @@ export default function HomepageVideoForm({ currentVideoUrl }: HomepageVideoForm
 
     setError(null);
     setUploading(true);
-    setUploadProgress("Upload en cours...");
+    setUploadProgress("Préparation...");
 
     const ext = file.name.split(".").pop();
     const fileName = `hero-video-${Date.now()}.${ext}`;
+    const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
 
-    const { data, error: uploadError } = await supabase.storage
-      .from("site-assets")
-      .upload(fileName, file, {
-        cacheControl: "3600",
-        upsert: false,
-      });
+    try {
+      // Use chunked upload for large files (> 6MB)
+      const chunkSize = 6 * 1024 * 1024; // 6MB chunks
+      const totalChunks = Math.ceil(file.size / chunkSize);
 
-    if (uploadError) {
-      setError("Erreur upload : " + uploadError.message);
-      setUploading(false);
-      setUploadProgress(null);
-      return;
+      if (file.size > chunkSize) {
+        setUploadProgress(`Upload 0% (0/${fileSizeMB} Mo)`);
+
+        // Create signed upload URL for resumable upload
+        const { data: signedData, error: signedError } = await supabase.storage
+          .from("site-assets")
+          .createSignedUploadUrl(fileName);
+
+        if (signedError) throw signedError;
+
+        // Upload using the signed URL with the standard method
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from("site-assets")
+          .uploadToSignedUrl(fileName, signedData.token, file, {
+            cacheControl: "3600",
+          });
+
+        if (uploadError) throw uploadError;
+
+        const { data: urlData } = supabase.storage
+          .from("site-assets")
+          .getPublicUrl(uploadData!.path);
+
+        setVideoUrl(urlData.publicUrl);
+      } else {
+        setUploadProgress(`Upload en cours (${fileSizeMB} Mo)...`);
+
+        const { data, error: uploadError } = await supabase.storage
+          .from("site-assets")
+          .upload(fileName, file, {
+            cacheControl: "3600",
+            upsert: false,
+          });
+
+        if (uploadError) throw uploadError;
+
+        const { data: urlData } = supabase.storage
+          .from("site-assets")
+          .getPublicUrl(data.path);
+
+        setVideoUrl(urlData.publicUrl);
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.includes("maximum allowed size") || msg.includes("exceeded")) {
+        setError(
+          `Fichier trop volumineux pour le bucket Supabase (${fileSizeMB} Mo). ` +
+          "Va dans Supabase Dashboard → Storage → site-assets → Settings et augmente la limite de taille."
+        );
+      } else {
+        setError("Erreur upload : " + msg);
+      }
     }
 
-    const { data: urlData } = supabase.storage
-      .from("site-assets")
-      .getPublicUrl(data.path);
-
-    setVideoUrl(urlData.publicUrl);
     setUploading(false);
     setUploadProgress(null);
   };
