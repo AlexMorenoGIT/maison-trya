@@ -144,17 +144,17 @@ export default function Header({ forceDark = false }: HeaderProps) {
           </nav>
 
           {/* Right: Icons */}
-          <div className="flex items-center gap-5 flex-shrink-0">
+          <div className="flex items-center gap-6 flex-shrink-0">
             {/* Search */}
             <button
               onClick={() => setSearchOpen(true)}
               aria-label="Rechercher"
-              className={`transition-colors duration-300 ${textClass}`}
+              className={`flex items-center justify-center transition-colors duration-300 ${textClass}`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
+                width="20"
+                height="20"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -171,12 +171,12 @@ export default function Header({ forceDark = false }: HeaderProps) {
             <Link
               href="/connexion"
               aria-label="Mon compte"
-              className={`transition-colors duration-300 ${textClass}`}
+              className={`flex items-center justify-center transition-colors duration-300 ${textClass}`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
+                width="20"
+                height="20"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -193,7 +193,7 @@ export default function Header({ forceDark = false }: HeaderProps) {
             <Link
               href="/panier"
               aria-label="Panier"
-              className={`transition-colors duration-300 ${textClass}`}
+              className={`flex items-center justify-center transition-colors duration-300 ${textClass}`}
             >
               <CartIcon />
             </Link>

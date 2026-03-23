@@ -86,6 +86,24 @@ CREATE POLICY "orders_insert" ON orders FOR INSERT WITH CHECK (true);
 CREATE POLICY "orders_select" ON orders FOR SELECT USING (is_admin());
 CREATE POLICY "orders_update" ON orders FOR UPDATE USING (is_admin());
 
+-- Site settings table (key-value store for homepage video, etc.)
+CREATE TABLE IF NOT EXISTS site_settings (
+  key text PRIMARY KEY,
+  value text NOT NULL DEFAULT '',
+  updated_at timestamptz DEFAULT now()
+);
+
+-- Site settings policies
+ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "site_settings_select" ON site_settings FOR SELECT USING (true);
+CREATE POLICY "site_settings_insert" ON site_settings FOR INSERT WITH CHECK (is_admin());
+CREATE POLICY "site_settings_update" ON site_settings FOR UPDATE USING (is_admin());
+CREATE POLICY "site_settings_delete" ON site_settings FOR DELETE USING (is_admin());
+
+-- Insert default hero video setting
+INSERT INTO site_settings (key, value) VALUES ('hero_video_url', '')
+ON CONFLICT (key) DO NOTHING;
+
 -- Auto-update updated_at
 CREATE OR REPLACE FUNCTION update_updated_at()
 RETURNS TRIGGER AS $$
@@ -97,6 +115,10 @@ $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER products_updated_at
   BEFORE UPDATE ON products
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+CREATE TRIGGER site_settings_updated_at
+  BEFORE UPDATE ON site_settings
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 `.trim();
 

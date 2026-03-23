@@ -26,6 +26,12 @@ export interface Order {
   created_at: string;
 }
 
+export interface SiteSetting {
+  key: string;
+  value: string;
+  updated_at: string;
+}
+
 export interface CartItem {
   product_id: string;
   slug: string;

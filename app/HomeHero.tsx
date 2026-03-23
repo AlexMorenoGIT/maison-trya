@@ -2,11 +2,34 @@
 
 import { motion } from "framer-motion";
 
-export default function HomeHero() {
+interface HomeHeroProps {
+  videoUrl?: string;
+}
+
+export default function HomeHero({ videoUrl }: HomeHeroProps) {
+  const hasVideo = !!videoUrl;
+
   return (
     <section className="h-screen w-full relative overflow-hidden bg-tortoise">
-      {/* Animated grain texture */}
-      <div className="absolute inset-0 opacity-[0.08] pointer-events-none hero-grain" />
+      {/* Video background */}
+      {hasVideo && (
+        <video
+          src={videoUrl}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      )}
+
+      {/* Overlay for video readability */}
+      {hasVideo && <div className="absolute inset-0 bg-tortoise/50" />}
+
+      {/* Animated grain texture (only when no video) */}
+      {!hasVideo && (
+        <div className="absolute inset-0 opacity-[0.08] pointer-events-none hero-grain" />
+      )}
 
       {/* Centered content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full px-8">

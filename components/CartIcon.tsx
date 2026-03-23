@@ -10,7 +10,7 @@ export default function CartIcon({ className = "" }: CartIconProps) {
   const { count } = useCart();
 
   return (
-    <span className="relative inline-flex">
+    <span className="relative inline-flex items-center justify-center w-[18px] h-[18px]">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="18"
