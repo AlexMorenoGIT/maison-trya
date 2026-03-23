@@ -95,7 +95,7 @@ export default function EditableImage({
 
   if (!isAdmin) {
     return (
-      <div className={className}>
+      <div className={`${className} w-full h-full`}>
         <img src={currentSrc} alt={alt} className={imgClassName} />
       </div>
     );
@@ -103,7 +103,7 @@ export default function EditableImage({
 
   return (
     <div
-      className={`relative group ${className}`}
+      className={`group ${className} w-full h-full`}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >

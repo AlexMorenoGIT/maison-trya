@@ -113,7 +113,7 @@ export default function HomeContent({ featuredProducts }: HomeContentProps) {
       </section>
 
       {/* -- Section 4: Editorial Quote --------------------------------------- */}
-      <section className="w-full h-[70vh] relative">
+      <section className="w-full h-[70vh] relative overflow-hidden">
         {/* Background image */}
         <EditableImage
           settingKey="home_editorial_image"

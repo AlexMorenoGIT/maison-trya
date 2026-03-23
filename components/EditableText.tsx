@@ -33,8 +33,14 @@ export default function EditableText({
     if (editing && inputRef.current) {
       inputRef.current.focus();
       inputRef.current.select();
+      // Auto-resize textarea to fit content
+      if (multiline && inputRef.current instanceof HTMLTextAreaElement) {
+        const ta = inputRef.current;
+        ta.style.height = "auto";
+        ta.style.height = Math.max(120, ta.scrollHeight) + "px";
+      }
     }
-  }, [editing]);
+  }, [editing, multiline]);
 
   const handleSave = async () => {
     setSaving(true);
@@ -70,11 +76,16 @@ export default function EditableText({
           <textarea
             ref={inputRef as React.RefObject<HTMLTextAreaElement>}
             value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => {
+              setValue(e.target.value);
+              // Auto-resize on input
+              const ta = e.target;
+              ta.style.height = "auto";
+              ta.style.height = Math.max(120, ta.scrollHeight) + "px";
+            }}
             onKeyDown={handleKeyDown}
-            rows={4}
-            className={`${className} w-full bg-white/90 border-2 border-gold rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-gold/50 resize-y`}
-            style={{ color: "inherit" }}
+            rows={6}
+            className={`${className} w-full bg-white/90 border-2 border-gold rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gold/50 resize-y !text-base !leading-relaxed !tracking-normal !text-tortoise`}
           />
         ) : (
           <input
