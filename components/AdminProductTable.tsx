@@ -120,7 +120,7 @@ export default function AdminProductTable({ products }: AdminProductTableProps) 
                     }`}
                   >
                     <td className="px-4 py-2">
-                      {product.images?.[0] ? (
+                      {product.images?.[0] && (product.images[0].startsWith("/") || product.images[0].startsWith("http")) ? (
                         <Image
                           src={product.images[0]}
                           alt={product.name}
