@@ -35,14 +35,28 @@ export default function PanierPage() {
     setLoading(true);
 
     try {
+      // Verify user is authenticated
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        setError("Vous devez être connecté pour passer commande.");
+        setLoading(false);
+        return;
+      }
+
+      // Recalculate total from cart items (don't trust client total alone)
+      const calculatedTotal = cart.items.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      );
+
       const { data: order, error: orderError } = await supabase
         .from("orders")
         .insert({
-          customer_name: customerName,
-          customer_email: customerEmail,
-          customer_address: customerAddress,
+          customer_name: customerName.trim(),
+          customer_email: customerEmail.trim(),
+          customer_address: customerAddress.trim(),
           items: cart.items,
-          total: cart.total,
+          total: Math.round(calculatedTotal * 100) / 100,
           status: "confirmed",
         })
         .select()
@@ -55,7 +69,7 @@ export default function PanierPage() {
         JSON.stringify({
           id: order.id,
           items: cart.items,
-          total: cart.total,
+          total: calculatedTotal,
           customer_name: customerName,
         })
       );

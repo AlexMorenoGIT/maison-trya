@@ -117,6 +117,31 @@ export default function ProductForm({ product }: ProductFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    // Client-side validation
+    const trimmedName = name.trim();
+    if (!trimmedName || trimmedName.length > 200) {
+      setError("Le nom doit contenir entre 1 et 200 caractères.");
+      return;
+    }
+    if (description.length > 5000) {
+      setError("La description ne doit pas dépasser 5000 caractères.");
+      return;
+    }
+    const numPrice = parseFloat(price);
+    if (isNaN(numPrice) || numPrice <= 0 || numPrice >= 100000) {
+      setError("Le prix doit être entre 0.01 et 99 999 €.");
+      return;
+    }
+    if (!collection) {
+      setError("Veuillez sélectionner une collection.");
+      return;
+    }
+    if (!category) {
+      setError("Veuillez sélectionner une catégorie.");
+      return;
+    }
+
     setSaving(true);
 
     try {
