@@ -143,44 +143,6 @@ export default function HomeContent({ featuredProducts }: HomeContentProps) {
         />
       </section>
 
-      {/* -- Section 5: Les 4 Valeurs ----------------------------------------- */}
-      <section className="bg-tortoise py-24 px-8">
-        <FadeIn>
-          <EditableText
-            settingKey="home_values_title"
-            fallback="NOS VALEURS"
-            as="h2"
-            className="font-bold uppercase tracking-[0.3em] text-cream text-center text-3xl mb-16"
-          />
-        </FadeIn>
-
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {[
-            { key: "instinct", name: "L'INSTINCT", desc: "La verite sauvage qui survit quand tout s'ecroule." },
-            { key: "eveil", name: "L'EVEIL", desc: "Le passage brutal de l'inertie a l'action. Montrer les crocs." },
-            { key: "dualite", name: "LA DUALITE", desc: "L'equilibre souverain entre la douceur interieure et la griffe exterieure." },
-            { key: "souverainete", name: "LA SOUVERAINETE", desc: "Le droit absolu de regner sur son propre territoire." },
-          ].map((value, index) => (
-            <FadeIn key={value.key} delay={index * 0.1}>
-              <div className="border-t border-cream/20 pt-8">
-                <EditableText
-                  settingKey={`home_value_${value.key}_name`}
-                  fallback={value.name}
-                  as="h3"
-                  className="font-bold uppercase text-cream tracking-[0.15em] text-lg"
-                />
-                <EditableText
-                  settingKey={`home_value_${value.key}_desc`}
-                  fallback={value.desc}
-                  as="p"
-                  className="text-cream/70 text-sm mt-4 leading-relaxed"
-                  multiline
-                />
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-      </section>
     </>
   );
 }

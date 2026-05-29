@@ -103,7 +103,7 @@ export default function EditableImage({
 
   return (
     <div
-      className={`group ${className} w-full h-full`}
+      className={`group relative ${className} w-full h-full`}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >
