@@ -43,8 +43,8 @@ export default function AProposContent() {
           className="absolute inset-0"
           imgClassName="w-full h-full object-cover brightness-50"
         />
-        <div className="relative z-10 flex items-center justify-center h-full">
-          <FadeIn direction="none">
+        <div className="relative z-10 flex items-center justify-center h-full pointer-events-none">
+          <FadeIn direction="none" className="pointer-events-auto">
             <EditableText
               settingKey="about_hero_title"
               fallback="L'UNIVERS MAISON TRYA."
@@ -53,7 +53,7 @@ export default function AProposContent() {
             />
           </FadeIn>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-cream to-transparent z-10" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-cream to-transparent z-10 pointer-events-none" />
       </section>
 
       {/* Section 2: Vision */}

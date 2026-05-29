@@ -124,8 +124,8 @@ export default function HomeContent({ featuredProducts }: HomeContentProps) {
         />
 
         {/* Centered quote */}
-        <div className="relative z-10 flex items-center justify-center h-full px-8">
-          <FadeIn direction="none">
+        <div className="relative z-10 flex items-center justify-center h-full px-8 pointer-events-none">
+          <FadeIn direction="none" className="pointer-events-auto">
             <EditableText
               settingKey="home_editorial_quote"
               fallback="NOUS NE VENDONS PAS DE LA PARURE, MAIS UNE METAMORPHOSE."
@@ -139,7 +139,7 @@ export default function HomeContent({ featuredProducts }: HomeContentProps) {
         <img
           src="/logos/logo-horizontal-cream.svg"
           alt="Maison trya."
-          className="absolute bottom-8 right-8 w-[100px] z-10"
+          className="absolute bottom-8 right-8 w-[100px] z-10 pointer-events-none"
         />
       </section>
 
