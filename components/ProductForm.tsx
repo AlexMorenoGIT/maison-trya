@@ -166,7 +166,7 @@ export default function ProductForm({ product }: ProductFormProps) {
         }
       }
 
-      const slug = generateSlug(name);
+      const slug = isEdit ? product.slug : generateSlug(name);
       const sizes = sizesInput
         .split(",")
         .map((s) => s.trim())
@@ -235,7 +235,7 @@ export default function ProductForm({ product }: ProductFormProps) {
             />
             {name && (
               <p className="mt-1 text-xs text-tortoise/40">
-                Slug : {generateSlug(name)}
+                Slug : {isEdit ? product.slug : generateSlug(name)}
               </p>
             )}
           </div>
