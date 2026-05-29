@@ -101,9 +101,10 @@ export default function EditableImage({
     );
   }
 
+  const hasPositioning = /\b(absolute|fixed|sticky|relative)\b/.test(className);
   return (
     <div
-      className={`group relative ${className} w-full h-full`}
+      className={`group ${hasPositioning ? "" : "relative"} ${className} w-full h-full`}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >
