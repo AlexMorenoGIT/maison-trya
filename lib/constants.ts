@@ -36,3 +36,23 @@ export const CATEGORIES = {
 
 export type CollectionValue = (typeof COLLECTIONS)[number]["value"];
 export type CategoryValue = keyof typeof CATEGORIES;
+
+// Spotify playlist IDs per collection (used for QR codes on product pages)
+export const SPOTIFY_PLAYLISTS: Record<CollectionValue, string> = {
+  vulnerabilite: "4XrDDtfVVVPz5oWFyfW9z0",
+  eveil: "13f5PQd9sgBqDtJ3SxkJ6h",
+  ferocite: "",
+};
+
+// WhatsApp concierge number (international format, no +, e.g. "33612345678")
+// Leave empty to hide the button.
+export const WHATSAPP_NUMBER = "";
+
+// Size guide (FR), measurements in cm
+export const SIZE_GUIDE: { size: string; bust: string; waist: string; hips: string }[] = [
+  { size: "34", bust: "80",  waist: "62",  hips: "86" },
+  { size: "36", bust: "84",  waist: "66",  hips: "90" },
+  { size: "38", bust: "88",  waist: "70",  hips: "94" },
+  { size: "40", bust: "92",  waist: "74",  hips: "98" },
+  { size: "42", bust: "96",  waist: "78",  hips: "102" },
+];

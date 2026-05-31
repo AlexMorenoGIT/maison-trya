@@ -2,14 +2,23 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import ProductCard from "@/components/ProductCard";
 import FadeIn from "@/components/FadeIn";
+import EditableText from "@/components/EditableText";
 import { useCart } from "@/lib/cart-context";
+import { SPOTIFY_PLAYLISTS, WHATSAPP_NUMBER, SIZE_GUIDE } from "@/lib/constants";
 import type { Product } from "@/lib/types";
 
 function formatPrice(price: number): string {
-  return price.toLocaleString("fr-FR") + " \u20AC";
+  return price.toLocaleString("fr-FR") + " €";
 }
+
+const COLLECTION_LABEL: Record<string, string> = {
+  vulnerabilite: "Vulnérabilité",
+  eveil: "Éveil",
+  ferocite: "Férocité",
+};
 
 interface ProductDetailClientProps {
   product: Product;
@@ -24,6 +33,7 @@ export default function ProductDetailClient({
   const [selectedColor, setSelectedColor] = useState(0);
   const [selectedSize, setSelectedSize] = useState(0);
   const [added, setAdded] = useState(false);
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
   const { addItem } = useCart();
 
   const totalImages = product.images.length;
@@ -60,6 +70,22 @@ export default function ProductDetailClient({
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   }
+
+  const playlistId = SPOTIFY_PLAYLISTS[product.collection];
+  const playlistUrl = playlistId
+    ? `https://open.spotify.com/playlist/${playlistId}`
+    : null;
+  const qrCodeUrl = playlistUrl
+    ? `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(playlistUrl)}&size=240x240&margin=4&color=432918&bgcolor=F5F0E1`
+    : null;
+
+  const collectionLabel = COLLECTION_LABEL[product.collection] || "";
+
+  const whatsappLink = WHATSAPP_NUMBER
+    ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+        `Bonjour, j'ai une question sur la pièce "${product.name}" (réf : ${product.slug}).`
+      )}`
+    : null;
 
   return (
     <main className="bg-cloud text-tortoise">
@@ -189,9 +215,17 @@ export default function ProductDetailClient({
           {/* Size selector */}
           {product.sizes.length > 0 && (
             <div className="mt-8">
-              <p className="text-xs font-bold uppercase tracking-[0.15em]">
-                TAILLE
-              </p>
+              <div className="flex items-baseline justify-between">
+                <p className="text-xs font-bold uppercase tracking-[0.15em]">
+                  TAILLE
+                </p>
+                <button
+                  onClick={() => setSizeGuideOpen(true)}
+                  className="text-xs text-tortoise/60 underline underline-offset-2 hover:text-tortoise transition-colors"
+                >
+                  Guide des tailles
+                </button>
+              </div>
               <div className="mt-3 flex flex-wrap gap-2">
                 {product.sizes.map((size, index) => (
                   <button
@@ -225,15 +259,64 @@ export default function ProductDetailClient({
                 : "bg-tortoise text-cream hover:bg-tortoise/90"
             }`}
           >
-            {added ? "AJOUTÉ \u2713" : "AJOUTER AU PANIER"}
+            {added ? "AJOUTÉ ✓" : "AJOUTER AU PANIER"}
           </button>
 
-          {/* Guide des tailles */}
-          <p className="mt-4 text-center">
-            <button className="text-xs text-tortoise/50 underline uppercase tracking-[0.1em] hover:text-tortoise/80 transition-colors">
-              GUIDE DES TAILLES
-            </button>
-          </p>
+          {/* Composition */}
+          <div className="mt-12 pt-8 border-t border-tortoise/10">
+            <p className="text-xs font-bold uppercase tracking-[0.15em] text-tortoise/60 mb-2">
+              COMPOSITION
+            </p>
+            <EditableText
+              settingKey={`product_composition_${product.slug}`}
+              fallback="À compléter par le studio. Cliquez ici en mode admin pour saisir la composition (matières, entretien)."
+              as="p"
+              className="text-sm leading-relaxed text-tortoise/80"
+              multiline
+            />
+          </div>
+
+          {/* Spotify playlist QR code */}
+          {qrCodeUrl && playlistUrl && (
+            <div className="mt-12 pt-8 border-t border-tortoise/10">
+              <p className="text-xs font-bold uppercase tracking-[0.15em] text-tortoise/60">
+                L&apos;AMBIANCE DE LA PIÈCE
+              </p>
+              <p className="mt-2 text-sm text-tortoise/70">
+                Scanne pour écouter la playlist {collectionLabel} sur Spotify.
+              </p>
+              <div className="mt-6 flex items-start gap-6">
+                <a
+                  href={playlistUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-shrink-0 block bg-cream p-3 border border-tortoise/10 hover:border-tortoise/30 transition-colors"
+                  aria-label={`Ouvrir la playlist ${collectionLabel} sur Spotify`}
+                >
+                  <img
+                    src={qrCodeUrl}
+                    alt={`QR code playlist ${collectionLabel}`}
+                    width={120}
+                    height={120}
+                    className="block"
+                  />
+                </a>
+                <div className="flex flex-col gap-2">
+                  <p className="text-xs uppercase tracking-[0.15em] text-tortoise">
+                    Playlist {collectionLabel}
+                  </p>
+                  <a
+                    href={playlistUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-tortoise/60 underline underline-offset-2 hover:text-tortoise transition-colors"
+                  >
+                    Ouvrir sur Spotify ↗
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
         </FadeIn>
       </div>
 
@@ -255,6 +338,119 @@ export default function ProductDetailClient({
           </div>
         </div>
       </section>
+
+      {/* WhatsApp concierge floating button */}
+      {whatsappLink && (
+        <a
+          href={whatsappLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Conciergerie WhatsApp"
+          className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg hover:scale-105 transition-transform"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 32 32"
+            width="28"
+            height="28"
+            fill="white"
+            aria-hidden="true"
+          >
+            <path d="M19.11 17.205c-.372 0-1.088 1.39-1.518 1.39a.633.633 0 0 1-.315-.1c-.802-.402-1.504-.817-2.163-1.447-.545-.516-1.146-1.29-1.46-1.963a.426.426 0 0 1-.073-.215c0-.33.99-.945.99-1.49 0-.143-.73-2.09-.832-2.335-.143-.372-.214-.487-.6-.487-.187 0-.36-.043-.53-.043-.302 0-.53.115-.746.315-.688.645-1.032 1.318-1.06 2.264v.114c-.015.99.472 1.977 1.017 2.78 1.23 1.82 2.506 3.41 4.554 4.34.616.287 2.035.888 2.722.888.345 0 2.05-.43 2.05-1.347 0-.46-.014-.97-.115-1.347-.158-.602-1.302-.93-1.92-1.117zM16.097 27.034c-6.077 0-11.012-4.935-11.012-11.012 0-6.078 4.935-11.012 11.012-11.012 6.077 0 11.012 4.934 11.012 11.012 0 6.077-4.935 11.012-11.012 11.012zm0-24.018C8.882 3.016 2.99 8.892 2.99 16.022a13.04 13.04 0 0 0 2.066 7.052L3 30.984l8.116-2.024A12.96 12.96 0 0 0 16.097 30c7.215 0 13.107-5.892 13.107-13.107S23.312 3.016 16.097 3.016z" />
+          </svg>
+        </a>
+      )}
+
+      {/* Size guide modal */}
+      <AnimatePresence>
+        {sizeGuideOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setSizeGuideOpen(false)}
+            className="fixed inset-0 z-[70] bg-black/60 flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 20, scale: 0.98 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-cream w-full max-w-lg p-8 md:p-10 max-h-[90vh] overflow-y-auto"
+            >
+              <div className="flex items-start justify-between mb-6">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.3em] text-rubber">
+                    GUIDE DES TAILLES
+                  </p>
+                  <h2 className="mt-2 text-2xl font-bold uppercase tracking-[0.1em] text-tortoise">
+                    Du 34 au 42
+                  </h2>
+                </div>
+                <button
+                  onClick={() => setSizeGuideOpen(false)}
+                  aria-label="Fermer"
+                  className="text-tortoise/60 hover:text-tortoise transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </div>
+
+              <p className="text-sm text-tortoise/70 mb-6 leading-relaxed">
+                Toutes les mesures sont indiquées en centimètres et correspondent aux mensurations du corps, non du vêtement.
+              </p>
+
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-tortoise/20">
+                    <th className="text-left py-3 text-xs font-bold uppercase tracking-[0.1em] text-tortoise/60">
+                      Taille
+                    </th>
+                    <th className="text-right py-3 text-xs font-bold uppercase tracking-[0.1em] text-tortoise/60">
+                      Poitrine
+                    </th>
+                    <th className="text-right py-3 text-xs font-bold uppercase tracking-[0.1em] text-tortoise/60">
+                      Taille
+                    </th>
+                    <th className="text-right py-3 text-xs font-bold uppercase tracking-[0.1em] text-tortoise/60">
+                      Hanches
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {SIZE_GUIDE.map((row) => (
+                    <tr key={row.size} className="border-b border-tortoise/10">
+                      <td className="py-3 font-bold text-tortoise">{row.size}</td>
+                      <td className="py-3 text-right text-tortoise/80">{row.bust}</td>
+                      <td className="py-3 text-right text-tortoise/80">{row.waist}</td>
+                      <td className="py-3 text-right text-tortoise/80">{row.hips}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              <p className="mt-6 text-xs text-tortoise/50 italic leading-relaxed">
+                Une hésitation ? Notre conciergerie WhatsApp est à ta disposition pour te conseiller.
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }

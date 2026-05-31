@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { createClient } from "@/lib/supabase/server";
+import { SiteSettingsProvider } from "@/lib/site-settings-context";
 import type { Product } from "@/lib/types";
 import ProductDetailClient from "./ProductDetailClient";
 
@@ -13,14 +14,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
   const supabase = await createClient();
 
-  const { data: product } = await supabase
-    .from("products")
-    .select("*")
-    .eq("slug", slug)
-    .single();
+  const [{ data: product }, { data: settingsRows }] = await Promise.all([
+    supabase.from("products").select("*").eq("slug", slug).single(),
+    supabase.from("site_settings").select("key, value"),
+  ]);
 
   if (!product) {
     notFound();
+  }
+
+  const settings: Record<string, string> = {};
+  for (const row of settingsRows || []) {
+    settings[row.key] = row.value;
   }
 
   // Fetch related products: same category, exclude current, limit 4
@@ -48,13 +53,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   return (
-    <>
+    <SiteSettingsProvider initial={settings}>
       <Header forceDark />
       <ProductDetailClient
         product={product as Product}
         relatedProducts={relatedProducts}
       />
       <Footer />
-    </>
+    </SiteSettingsProvider>
   );
 }
