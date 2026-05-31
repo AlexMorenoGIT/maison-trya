@@ -134,6 +134,10 @@ export default function Header({ forceDark = false }: HeaderProps) {
               </AnimatePresence>
             </div>
 
+            <Link href="/quiz" className={linkClass}>
+              Quiz
+            </Link>
+
             <Link href="/a-propos" className={linkClass}>
               L&apos;Univers
             </Link>
@@ -465,6 +469,7 @@ export default function Header({ forceDark = false }: HeaderProps) {
 
               {/* Simple links */}
               {[
+                { href: "/quiz", label: "Quiz" },
                 { href: "/a-propos", label: "L'Univers" },
                 { href: "/a-propos", label: "\u00C0 Propos" },
                 { href: "/connexion", label: "Mon Compte" },

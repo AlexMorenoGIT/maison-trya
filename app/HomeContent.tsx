@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 import FadeIn from "@/components/FadeIn";
 import EditableImage from "@/components/EditableImage";
@@ -13,6 +14,41 @@ interface HomeContentProps {
 export default function HomeContent({ featuredProducts }: HomeContentProps) {
   return (
     <>
+      {/* -- Section Quiz Teaser --------------------------------------------- */}
+      <section className="bg-tortoise py-24 md:py-32 px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <FadeIn>
+            <EditableText
+              settingKey="home_quiz_label"
+              fallback="MIROIR D'INSTINCT"
+              as="span"
+              className="font-bold uppercase tracking-[0.3em] text-xs text-gold"
+            />
+            <EditableText
+              settingKey="home_quiz_title"
+              fallback="QUELLE EST TA COLLECTION ?"
+              as="h2"
+              className="mt-6 font-bold uppercase text-3xl md:text-5xl text-cream leading-tight tracking-[0.1em]"
+            />
+          </FadeIn>
+          <FadeIn delay={0.2}>
+            <EditableText
+              settingKey="home_quiz_text"
+              fallback="Vulnérabilité, Éveil ou Férocité. Réponds à six questions et découvre la collection qui te ressemble à cet instant précis de ta vie."
+              as="p"
+              className="mt-8 text-lg text-cream/80 leading-relaxed max-w-2xl mx-auto"
+              multiline
+            />
+            <Link
+              href="/quiz"
+              className="inline-block mt-10 uppercase tracking-[0.2em] text-sm border border-cream/60 px-10 py-4 text-cream hover:bg-cream hover:text-tortoise transition-all duration-300"
+            >
+              Faire le quiz
+            </Link>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* -- Section 2: Manifeste "L'Instinct" ------------------------------- */}
       <section className="bg-cream py-32 px-8">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
