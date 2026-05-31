@@ -45,8 +45,14 @@ export const SPOTIFY_PLAYLISTS: Record<CollectionValue, string> = {
 };
 
 // WhatsApp concierge number (international format, no +, e.g. "33612345678")
-// Leave empty to hide the button.
+// Leave empty to hide WhatsApp links across the site.
 export const WHATSAPP_NUMBER = "";
+
+export function whatsappLink(message?: string): string | null {
+  if (!WHATSAPP_NUMBER) return null;
+  const base = `https://wa.me/${WHATSAPP_NUMBER}`;
+  return message ? `${base}?text=${encodeURIComponent(message)}` : base;
+}
 
 // Size guide (FR), measurements in cm
 export const SIZE_GUIDE: { size: string; bust: string; waist: string; hips: string }[] = [

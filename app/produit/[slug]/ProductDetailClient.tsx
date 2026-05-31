@@ -6,8 +6,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import ProductCard from "@/components/ProductCard";
 import FadeIn from "@/components/FadeIn";
 import EditableText from "@/components/EditableText";
+import WhatsAppIcon from "@/components/WhatsAppIcon";
 import { useCart } from "@/lib/cart-context";
-import { SPOTIFY_PLAYLISTS, WHATSAPP_NUMBER, SIZE_GUIDE } from "@/lib/constants";
+import { SPOTIFY_PLAYLISTS, SIZE_GUIDE, whatsappLink } from "@/lib/constants";
 import type { Product } from "@/lib/types";
 
 function formatPrice(price: number): string {
@@ -81,11 +82,12 @@ export default function ProductDetailClient({
 
   const collectionLabel = COLLECTION_LABEL[product.collection] || "";
 
-  const whatsappLink = WHATSAPP_NUMBER
-    ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-        `Bonjour, j'ai une question sur la pièce "${product.name}" (réf : ${product.slug}).`
-      )}`
-    : null;
+  const productWaLink = whatsappLink(
+    `Bonjour, j'ai une question sur la pièce "${product.name}" (réf : ${product.slug}).`
+  );
+  const sizeGuideWaLink = whatsappLink(
+    `Bonjour, j'aurais besoin de conseils sur la taille pour la pièce "${product.name}".`
+  );
 
   return (
     <main className="bg-cloud text-tortoise">
@@ -340,24 +342,15 @@ export default function ProductDetailClient({
       </section>
 
       {/* WhatsApp concierge floating button */}
-      {whatsappLink && (
+      {productWaLink && (
         <a
-          href={whatsappLink}
+          href={productWaLink}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Conciergerie WhatsApp"
-          className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg hover:scale-105 transition-transform"
+          className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 32 32"
-            width="28"
-            height="28"
-            fill="white"
-            aria-hidden="true"
-          >
-            <path d="M19.11 17.205c-.372 0-1.088 1.39-1.518 1.39a.633.633 0 0 1-.315-.1c-.802-.402-1.504-.817-2.163-1.447-.545-.516-1.146-1.29-1.46-1.963a.426.426 0 0 1-.073-.215c0-.33.99-.945.99-1.49 0-.143-.73-2.09-.832-2.335-.143-.372-.214-.487-.6-.487-.187 0-.36-.043-.53-.043-.302 0-.53.115-.746.315-.688.645-1.032 1.318-1.06 2.264v.114c-.015.99.472 1.977 1.017 2.78 1.23 1.82 2.506 3.41 4.554 4.34.616.287 2.035.888 2.722.888.345 0 2.05-.43 2.05-1.347 0-.46-.014-.97-.115-1.347-.158-.602-1.302-.93-1.92-1.117zM16.097 27.034c-6.077 0-11.012-4.935-11.012-11.012 0-6.078 4.935-11.012 11.012-11.012 6.077 0 11.012 4.934 11.012 11.012 0 6.077-4.935 11.012-11.012 11.012zm0-24.018C8.882 3.016 2.99 8.892 2.99 16.022a13.04 13.04 0 0 0 2.066 7.052L3 30.984l8.116-2.024A12.96 12.96 0 0 0 16.097 30c7.215 0 13.107-5.892 13.107-13.107S23.312 3.016 16.097 3.016z" />
-          </svg>
+          <WhatsAppIcon size={28} />
         </a>
       )}
 
@@ -444,9 +437,27 @@ export default function ProductDetailClient({
                 </tbody>
               </table>
 
-              <p className="mt-6 text-xs text-tortoise/50 italic leading-relaxed">
-                Une hésitation ? Notre conciergerie WhatsApp est à ta disposition pour te conseiller.
-              </p>
+              <div className="mt-8 pt-6 border-t border-tortoise/10">
+                <p className="text-xs text-tortoise/60 italic leading-relaxed mb-4">
+                  Une hésitation sur la taille ? Notre conciergerie est à ta disposition.
+                </p>
+                {sizeGuideWaLink ? (
+                  <a
+                    href={sizeGuideWaLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-3 bg-[#25D366] text-white px-5 py-3 text-xs font-bold uppercase tracking-[0.15em] hover:bg-[#1ebe57] transition-colors"
+                  >
+                    <WhatsAppIcon size={18} />
+                    Demander conseil sur WhatsApp
+                  </a>
+                ) : (
+                  <span className="inline-flex items-center gap-3 bg-tortoise/10 text-tortoise/50 px-5 py-3 text-xs font-bold uppercase tracking-[0.15em]">
+                    <WhatsAppIcon size={18} />
+                    Conciergerie à configurer
+                  </span>
+                )}
+              </div>
             </motion.div>
           </motion.div>
         )}
