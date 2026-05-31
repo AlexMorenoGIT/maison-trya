@@ -48,8 +48,7 @@ export const SPOTIFY_PLAYLISTS: Record<CollectionValue, string> = {
 // Leave empty to hide WhatsApp links across the site.
 export const WHATSAPP_NUMBER = "";
 
-export function whatsappLink(message?: string): string | null {
-  if (!WHATSAPP_NUMBER) return null;
+export function whatsappLink(message?: string): string {
   const base = `https://wa.me/${WHATSAPP_NUMBER}`;
   return message ? `${base}?text=${encodeURIComponent(message)}` : base;
 }

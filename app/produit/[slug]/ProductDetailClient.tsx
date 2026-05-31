@@ -342,17 +342,15 @@ export default function ProductDetailClient({
       </section>
 
       {/* WhatsApp concierge floating button */}
-      {productWaLink && (
-        <a
-          href={productWaLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Conciergerie WhatsApp"
-          className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform"
-        >
-          <WhatsAppIcon size={28} />
-        </a>
-      )}
+      <a
+        href={productWaLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Conciergerie WhatsApp"
+        className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform"
+      >
+        <WhatsAppIcon size={26} />
+      </a>
 
       {/* Size guide modal */}
       <AnimatePresence>
@@ -441,22 +439,15 @@ export default function ProductDetailClient({
                 <p className="text-xs text-tortoise/60 italic leading-relaxed mb-4">
                   Une hésitation sur la taille ? Notre conciergerie est à ta disposition.
                 </p>
-                {sizeGuideWaLink ? (
-                  <a
-                    href={sizeGuideWaLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-3 bg-[#25D366] text-white px-5 py-3 text-xs font-bold uppercase tracking-[0.15em] hover:bg-[#1ebe57] transition-colors"
-                  >
-                    <WhatsAppIcon size={18} />
-                    Demander conseil sur WhatsApp
-                  </a>
-                ) : (
-                  <span className="inline-flex items-center gap-3 bg-tortoise/10 text-tortoise/50 px-5 py-3 text-xs font-bold uppercase tracking-[0.15em]">
-                    <WhatsAppIcon size={18} />
-                    Conciergerie à configurer
-                  </span>
-                )}
+                <a
+                  href={sizeGuideWaLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 bg-[#25D366] text-white px-5 py-3 text-xs font-bold uppercase tracking-[0.15em] hover:bg-[#1ebe57] transition-colors"
+                >
+                  <WhatsAppIcon size={18} />
+                  Demander conseil sur WhatsApp
+                </a>
               </div>
             </motion.div>
           </motion.div>

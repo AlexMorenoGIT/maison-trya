@@ -97,20 +97,18 @@ export default function Footer() {
           <p className="text-xs uppercase tracking-[0.1em] opacity-60">
             &copy; 2026 Maison trya. Tous droits réservés.
           </p>
-          {wa && (
-            <a
-              href={wa}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Conciergerie WhatsApp"
-              className="flex items-center gap-2 text-xs uppercase tracking-[0.15em] opacity-80 hover:opacity-100 transition-opacity"
-            >
-              <span className="w-7 h-7 rounded-full bg-[#25D366] text-white flex items-center justify-center">
-                <WhatsAppIcon size={16} />
-              </span>
-              Conciergerie
-            </a>
-          )}
+          <a
+            href={wa}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Conciergerie WhatsApp"
+            className="flex items-center gap-2 text-xs uppercase tracking-[0.15em] opacity-80 hover:opacity-100 transition-opacity"
+          >
+            <span className="w-7 h-7 rounded-full bg-[#25D366] text-white flex items-center justify-center">
+              <WhatsAppIcon size={14} />
+            </span>
+            Conciergerie
+          </a>
         </div>
       </div>
     </footer>
