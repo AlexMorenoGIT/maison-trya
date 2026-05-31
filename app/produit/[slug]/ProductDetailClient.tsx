@@ -82,9 +82,6 @@ export default function ProductDetailClient({
 
   const collectionLabel = COLLECTION_LABEL[product.collection] || "";
 
-  const productWaLink = whatsappLink(
-    `Bonjour, j'ai une question sur la pièce "${product.name}" (réf : ${product.slug}).`
-  );
   const sizeGuideWaLink = whatsappLink(
     `Bonjour, j'aurais besoin de conseils sur la taille pour la pièce "${product.name}".`
   );
@@ -341,18 +338,7 @@ export default function ProductDetailClient({
         </div>
       </section>
 
-      {/* WhatsApp concierge floating button */}
-      <a
-        href={productWaLink}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Conciergerie WhatsApp"
-        className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform"
-      >
-        <WhatsAppIcon size={26} />
-      </a>
-
-      {/* Size guide modal */}
+{/* Size guide modal */}
       <AnimatePresence>
         {sizeGuideOpen && (
           <motion.div
