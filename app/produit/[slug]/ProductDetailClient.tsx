@@ -21,6 +21,15 @@ const COLLECTION_LABEL: Record<string, string> = {
   ferocite: "Férocité",
 };
 
+function splitDescription(desc: string): { description: string; matiere: string | null } {
+  if (!desc) return { description: "", matiere: null };
+  const match = desc.match(/^([\s\S]*?)\n\nMatière\s*:\s*([\s\S]+?)\.?\s*$/);
+  if (match) {
+    return { description: match[1].trim(), matiere: match[2].trim() };
+  }
+  return { description: desc, matiere: null };
+}
+
 interface ProductDetailClientProps {
   product: Product;
   relatedProducts: Product[];
@@ -85,6 +94,8 @@ export default function ProductDetailClient({
   const sizeGuideWaLink = whatsappLink(
     `Bonjour, j'aurais besoin de conseils sur la taille pour la pièce "${product.name}".`
   );
+
+  const { description: descText, matiere } = splitDescription(product.description);
 
   return (
     <main className="bg-cloud text-tortoise">
@@ -244,9 +255,11 @@ export default function ProductDetailClient({
           )}
 
           {/* Description */}
-          <p className="mt-8 text-base leading-relaxed text-tortoise/80">
-            {product.description}
-          </p>
+          {descText && (
+            <p className="mt-8 text-base leading-relaxed text-tortoise/80 whitespace-pre-line">
+              {descText}
+            </p>
+          )}
 
           {/* Add to cart */}
           <button
@@ -261,14 +274,14 @@ export default function ProductDetailClient({
             {added ? "AJOUTÉ ✓" : "AJOUTER AU PANIER"}
           </button>
 
-          {/* Composition */}
+          {/* Composition (matière) */}
           <div className="mt-12 pt-8 border-t border-tortoise/10">
             <p className="text-xs font-bold uppercase tracking-[0.15em] text-tortoise/60 mb-2">
               COMPOSITION
             </p>
             <EditableText
               settingKey={`product_composition_${product.slug}`}
-              fallback="À compléter par le studio. Cliquez ici en mode admin pour saisir la composition (matières, entretien)."
+              fallback={matiere ?? "—"}
               as="p"
               className="text-sm leading-relaxed text-tortoise/80"
               multiline

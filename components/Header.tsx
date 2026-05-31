@@ -135,7 +135,7 @@ export default function Header({ forceDark = false }: HeaderProps) {
             </div>
 
             <Link href="/quiz" className={linkClass}>
-              Quiz
+              Guide
             </Link>
 
             <Link href="/a-propos" className={linkClass}>
@@ -469,7 +469,7 @@ export default function Header({ forceDark = false }: HeaderProps) {
 
               {/* Simple links */}
               {[
-                { href: "/quiz", label: "Quiz" },
+                { href: "/quiz", label: "Guide" },
                 { href: "/a-propos", label: "L'Univers" },
                 { href: "/a-propos", label: "\u00C0 Propos" },
                 { href: "/connexion", label: "Mon Compte" },

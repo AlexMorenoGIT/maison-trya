@@ -43,7 +43,7 @@ export default function HomeContent({ featuredProducts }: HomeContentProps) {
               href="/quiz"
               className="inline-block mt-10 uppercase tracking-[0.2em] text-sm border border-cream/60 px-10 py-4 text-cream hover:bg-cream hover:text-tortoise transition-all duration-300"
             >
-              Faire le quiz
+              Découvrir le guide
             </Link>
           </FadeIn>
         </div>

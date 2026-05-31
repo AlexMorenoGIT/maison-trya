@@ -6,7 +6,6 @@ import ProductFilters from "@/components/ProductFilters";
 import FadeIn from "@/components/FadeIn";
 import { createClient } from "@/lib/supabase/server";
 import type { Product } from "@/lib/types";
-import LoadMoreProducts from "./LoadMoreProducts";
 
 interface CataloguePageProps {
   searchParams: Promise<{
@@ -17,6 +16,33 @@ interface CataloguePageProps {
   }>;
 }
 
+function interleaveByCollection(products: Product[]): Product[] {
+  const order: Product["collection"][] = ["vulnerabilite", "eveil", "ferocite"];
+  const groups: Record<string, Product[]> = {
+    vulnerabilite: [],
+    eveil: [],
+    ferocite: [],
+  };
+  for (const p of products) {
+    if (groups[p.collection]) groups[p.collection].push(p);
+  }
+  const result: Product[] = [];
+  let i = 0;
+  let added = true;
+  while (added) {
+    added = false;
+    for (const c of order) {
+      const item = groups[c][i];
+      if (item) {
+        result.push(item);
+        added = true;
+      }
+    }
+    i++;
+  }
+  return result;
+}
+
 export default async function CataloguePage({ searchParams }: CataloguePageProps) {
   const params = await searchParams;
   const { collection, category, subcategory, sort } = params;
@@ -25,16 +51,11 @@ export default async function CataloguePage({ searchParams }: CataloguePageProps
 
   let query = supabase.from("products").select("*");
 
-  if (collection) {
-    query = query.eq("collection", collection);
-  }
-  if (category) {
-    query = query.eq("category", category);
-  }
-  if (subcategory) {
-    query = query.eq("subcategory", subcategory);
-  }
+  if (collection) query = query.eq("collection", collection);
+  if (category) query = query.eq("category", category);
+  if (subcategory) query = query.eq("subcategory", subcategory);
 
+  const isDefaultSort = !sort;
   if (sort === "prix-asc") {
     query = query.order("price", { ascending: true });
   } else if (sort === "prix-desc") {
@@ -43,11 +64,13 @@ export default async function CataloguePage({ searchParams }: CataloguePageProps
     query = query.order("created_at", { ascending: false });
   }
 
-  query = query.range(0, 11);
+  const { data } = await query;
+  let products: Product[] = (data || []) as Product[];
 
-  const { data: products } = await query;
-  const initialProducts: Product[] = products || [];
-  const hasMore = initialProducts.length === 12;
+  // Interleave by collection only when there's no explicit collection filter and default sort
+  if (!collection && isDefaultSort) {
+    products = interleaveByCollection(products);
+  }
 
   return (
     <>
@@ -69,25 +92,15 @@ export default async function CataloguePage({ searchParams }: CataloguePageProps
           </FadeIn>
 
           {/* Product grid */}
-          {initialProducts.length > 0 ? (
+          {products.length > 0 ? (
             <div className="mt-16">
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-                {initialProducts.map((product, index) => (
-                  <FadeIn key={product.id} delay={index * 0.05}>
+                {products.map((product, index) => (
+                  <FadeIn key={product.id} delay={Math.min(index * 0.04, 0.6)}>
                     <ProductCard product={product} />
                   </FadeIn>
                 ))}
               </div>
-
-              {hasMore && (
-                <LoadMoreProducts
-                  collection={collection}
-                  category={category}
-                  subcategory={subcategory}
-                  sort={sort}
-                  initialOffset={12}
-                />
-              )}
             </div>
           ) : (
             <FadeIn delay={0.2}>

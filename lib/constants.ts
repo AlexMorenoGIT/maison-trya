@@ -40,8 +40,8 @@ export type CategoryValue = keyof typeof CATEGORIES;
 // Spotify playlist IDs per collection (used for QR codes on product pages)
 export const SPOTIFY_PLAYLISTS: Record<CollectionValue, string> = {
   vulnerabilite: "4XrDDtfVVVPz5oWFyfW9z0",
-  eveil: "13f5PQd9sgBqDtJ3SxkJ6h",
-  ferocite: "",
+  eveil: "0C5FVyldCtMQzcdWRXtzLZ",
+  ferocite: "13f5PQd9sgBqDtJ3SxkJ6h",
 };
 
 // WhatsApp concierge number (international format, no +, e.g. "33612345678")
